@@ -1,14 +1,13 @@
 package com.clarivate.testrestapi.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "user")
 public class User {
 
 	private @Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long userId;
 
 	private String username;

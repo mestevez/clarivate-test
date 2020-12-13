@@ -1,15 +1,14 @@
 package com.clarivate.testrestapi.score;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "score")
 public class Score {
 
 	private @Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long scoreId;
 
 	private long userId;

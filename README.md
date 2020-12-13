@@ -25,7 +25,8 @@ mvnw.cmd test
 ```
 
 # CURL Testing
-
+Before executing any curl command ensures the application is running.
+ 
 ## Loging In
 Application access is secured by session key authentication. 
 So, the first step in order to execute further requests is getting a session key.
@@ -42,7 +43,9 @@ Bearer  eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjbGFyaXZhdGVKV1QiLCJzdWIiOiJtZXN0ZXZleiI
 * Connection #0 to host localhost left intact
 ```
 
-Notice that "Bearer eyJh..." corresponds with session key, which must be sent in further request as a header parameter.  
+Notice that "Bearer eyJh..." corresponds with session key, which must be sent in further request as a header parameter.
+
+> Do not forget include "Bearer " when copying the key.
 
 ## Adding scores
 The addScores REST method can be executed like this: 
@@ -50,6 +53,7 @@ The addScores REST method can be executed like this:
 curl --header "Authorization: {sessionKey}" -X PUT -v localhost:8080/level/3/score/2999
 ```
 
+> Replace {sessionKey} by the token obtained before.
 ## Getting highest scores
 ```
 curl --header "Authorization: {sessionKey}" -v localhost:8080/level/3/score?filter=highestscore
