@@ -32,7 +32,18 @@ public class UserControllerTest {
 	}
 
 	@Test
-	void invalidLog() throws Exception {
+	void invalidUser() throws Exception {
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post("/login")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("{ \"username\": \"fake\", \"password\": \"fake\" }")
+		).andReturn();
+
+		assertEquals(HttpStatus.FORBIDDEN.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
+	}
+
+	@Test
+	void invalidPassword() throws Exception {
 		MvcResult mvcResult = mvc.perform(
 				MockMvcRequestBuilders.post("/login")
 						.contentType(MediaType.APPLICATION_JSON)

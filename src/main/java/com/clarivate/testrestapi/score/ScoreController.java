@@ -1,20 +1,28 @@
 package com.clarivate.testrestapi.score;
 
+import com.clarivate.testrestapi.user.User;
+import com.clarivate.testrestapi.user.UserBadCredentialsException;
+import com.clarivate.testrestapi.user.UserRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 @RestController
 class ScoreController {
 
+	private final UserRepository userRepository;
 	private final ScoreRepository repository;
 
-	public ScoreController(ScoreRepository repository) {
+	public ScoreController(UserRepository userRepository, ScoreRepository repository) {
+		this.userRepository = userRepository;
 		this.repository = repository;
 	}
 
@@ -23,20 +31,22 @@ class ScoreController {
 	 */
 	@GetMapping("/level/{level}/score")
 	ResponseEntity getScores(
-		@PathVariable("level") int level
+			Authentication auth,
+			@PathVariable("level") int level
 	) {
-		// TODO: Get userId from session
-		int userId = 0;
+		String username = Objects.requireNonNull(auth.getCredentials()).toString();
+		User user = Objects.requireNonNull(userRepository.findByUsername(username))
+				.orElseThrow(() -> new UserBadCredentialsException());
 
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.body(repository.findHighestByUserIdAndLevelOrderByValueDesc(userId, level));
+				.body(repository.findHighestByUserIdAndLevelOrderByValueDesc(user.getUserId(), level));
 	}
 
 	/**
 	 * Adds a new score for the current user in session and the received level.
-	 *
+	 * <p>
 	 * This endpoint can be called several times per user and level and does not return anything.
 	 * Only requests with valid session keys should be processed.
 	 *
@@ -44,13 +54,15 @@ class ScoreController {
 	 */
 	@PutMapping("/level/{level}/score/{value}")
 	ResponseEntity addScore(
-		@PathVariable("level") int level,
-		@PathVariable("value") int value
+			Authentication auth,
+			@PathVariable("level") int level,
+			@PathVariable("value") int value
 	) {
-		// TODO: Get userId from session
-		int userId = 0;
+		String username = Objects.requireNonNull(auth.getCredentials()).toString();
+		User user = Objects.requireNonNull(userRepository.findByUsername(username))
+						.orElseThrow(() -> new UserBadCredentialsException());
 
-		repository.save(new Score(userId, level, value));
+		repository.save(new Score(user.getUserId(), level, value));
 
 		return ResponseEntity
 				.status(HttpStatus.NO_CONTENT)

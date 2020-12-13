@@ -46,7 +46,7 @@ public class AuthTokenValidatorJWT implements AuthTokenValidator {
 
 		return new UsernamePasswordAuthenticationToken(
 				claims.getSubject(),
-				null,
+				claims.getSubject(),
 				null
 		);
 	}

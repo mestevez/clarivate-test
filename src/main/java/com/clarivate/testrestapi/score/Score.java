@@ -12,7 +12,7 @@ public class Score {
 	@GeneratedValue
 	Long scoreId;
 
-	private int userId;
+	private long userId;
 
 	private int level;
 
@@ -27,7 +27,7 @@ public class Score {
 	 * @param level
 	 * @param value
 	 */
-	public Score(int userId, int level, int value) {
+	public Score(long userId, int level, int value) {
 		this.userId = userId;
 		this.level = level;
 		this.value = value;
@@ -41,7 +41,7 @@ public class Score {
 		return scoreId;
 	}
 
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
@@ -57,7 +57,7 @@ public class Score {
 		this.scoreId = scoreid;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 

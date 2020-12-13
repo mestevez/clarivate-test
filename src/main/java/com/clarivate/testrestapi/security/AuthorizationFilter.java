@@ -34,6 +34,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 			}
 			chain.doFilter(request, response);
 		} catch (Throwable e) {
+			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
 		}

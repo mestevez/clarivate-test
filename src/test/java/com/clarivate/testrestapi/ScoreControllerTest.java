@@ -89,7 +89,6 @@ class ScoreControllerTest {
 			int expectedScore = expectedScores[expectedScoreIndex];
 			Map<String, Object> mvcResultScoreMap = (Map<String, Object>) mvcResultScoreList.get(expectedScoreIndex);
 
-			assertEquals(0, mvcResultScoreMap.get("userId"), String.format("Unexpected userId at index=%s", expectedScoreIndex));
 			assertEquals(expectedScore, mvcResultScoreMap.get("value"), String.format("Unexpected value at index=%s", expectedScoreIndex));
 		}
 	}
