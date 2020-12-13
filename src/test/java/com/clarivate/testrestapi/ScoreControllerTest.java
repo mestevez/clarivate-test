@@ -2,6 +2,8 @@ package com.clarivate.testrestapi;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -70,11 +73,15 @@ class ScoreControllerTest {
 	/**
 	 * @throws Exception
 	 */
-	@Test
-	void getScores() throws Exception {
+	@ParameterizedTest
+	@CsvSource({
+		"/level/{level}/score, '2470, 470, 1470, 8645, 16, 1567'",
+		"/level/{level}/score?filter=highestscore, '8645, 2470, 1567, 1470, 470'"
+	})
+	void getScores(String path, String expectedScoresParam) throws Exception {
 		MvcResult mvcResult = mvc.perform(
 				MockMvcRequestBuilders
-						.get("/level/{level}/score", 3)
+						.get(path, 3)
 						.header(HttpHeaders.AUTHORIZATION, authToken)
 		).andReturn();
 
@@ -82,8 +89,10 @@ class ScoreControllerTest {
 
 		List<Object> mvcResultScoreList = JsonParserFactory.getJsonParser().parseList(mvcResult.getResponse().getContentAsString());
 
-		int[] expectedScores = new int[]{2470, 1470, 470};
-
+		Integer[] expectedScores =
+				Arrays.stream(expectedScoresParam.split(","))
+				.map(s -> Integer.valueOf(s.trim()).intValue())
+				.toArray(Integer[]::new);
 		assertEquals(expectedScores.length, mvcResultScoreList.size(), String.format("Unexpected list size: %s", mvcResultScoreList));
 		for (int expectedScoreIndex = 0; expectedScoreIndex < expectedScores.length; expectedScoreIndex++) {
 			int expectedScore = expectedScores[expectedScoreIndex];

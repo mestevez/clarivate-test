@@ -32,6 +32,9 @@ public class LoadDatabase {
 			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user1.getUserId(), 3, 2470))));
 			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user1.getUserId(), 3, 470))));
 			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user1.getUserId(), 3, 1470))));
+			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user1.getUserId(), 3, 8645))));
+			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user1.getUserId(), 3, 16))));
+			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user1.getUserId(), 3, 1567))));
 
 			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user2.getUserId(), 1, 1470))));
 			log.info(String.format("Preloading %s", scoreRepository.save(new Score(user2.getUserId(), 1, 1254))));

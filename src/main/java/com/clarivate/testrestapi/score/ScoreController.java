@@ -8,11 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -32,16 +30,21 @@ class ScoreController {
 	@GetMapping("/level/{level}/score")
 	ResponseEntity getScores(
 			Authentication auth,
+			@RequestParam(name = "filter", required = false) String filter,
 			@PathVariable("level") int level
 	) {
 		String username = Objects.requireNonNull(auth.getCredentials()).toString();
 		User user = Objects.requireNonNull(userRepository.findByUsername(username))
 				.orElseThrow(() -> new UserBadCredentialsException());
 
+		List<Score> scoreList = filter != null && filter.equals("highestscore")
+				? repository.findTop5ByUserIdAndLevelOrderByValueDesc(user.getUserId(), level)
+				: repository.findByUserIdAndLevel(user.getUserId(), level);
+
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.body(repository.findHighestByUserIdAndLevelOrderByValueDesc(user.getUserId(), level));
+				.body(scoreList);
 	}
 
 	/**
@@ -60,7 +63,7 @@ class ScoreController {
 	) {
 		String username = Objects.requireNonNull(auth.getCredentials()).toString();
 		User user = Objects.requireNonNull(userRepository.findByUsername(username))
-						.orElseThrow(() -> new UserBadCredentialsException());
+				.orElseThrow(() -> new UserBadCredentialsException());
 
 		repository.save(new Score(user.getUserId(), level, value));
 
