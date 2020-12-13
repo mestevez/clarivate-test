@@ -13,7 +13,6 @@ public class SecurityController {
 
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity login(@RequestBody Login loginForm) {
-
 		if (loginForm.getUsername() == null || loginForm.getPassword() == null) {
 			// TODO: Throw specific Exception
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

@@ -3,6 +3,7 @@ package com.clarivate.testrestapi.security.token.jwt;
 import com.clarivate.testrestapi.security.token.AuthTokenValidator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -33,7 +34,7 @@ public class AuthTokenValidatorJWT implements AuthTokenValidator {
 	 */
 	@Override
 	public Authentication getAuth() {
-		String authenticationHeader = request.getHeader(properties.getHeader());
+		String authenticationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
 		String jwtToken = authenticationHeader.replace(properties.getPrefix(), "");
 
@@ -58,7 +59,7 @@ public class AuthTokenValidatorJWT implements AuthTokenValidator {
 	 */
 	@Override
 	public boolean isValid() {
-		String authenticationHeader = request.getHeader(properties.getHeader());
+		String authenticationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		return authenticationHeader != null && authenticationHeader.startsWith(properties.getPrefix());
 	}
 }

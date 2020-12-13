@@ -19,4 +19,13 @@ public class Login {
 	public String getPassword() {
 		return password;
 	}
+
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public String toString() {
+		return String.format("username: %s, password: %s", username, password);
+	}
 }
