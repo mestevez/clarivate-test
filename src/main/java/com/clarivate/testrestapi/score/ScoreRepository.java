@@ -1,4 +1,4 @@
-package com.clarivate.testrestapi;
+package com.clarivate.testrestapi.score;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.clarivate.testrestapi;
+package com.clarivate.testrestapi.user;
 
 import com.clarivate.testrestapi.security.token.jwt.AuthTokenGeneratorJWT;
 import org.springframework.http.HttpStatus;
@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SecurityController {
+public class UserController {
 
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity login(@RequestBody Login loginForm) {
-		if (loginForm.getUsername() == null || loginForm.getPassword() == null) {
+	ResponseEntity login(@RequestBody User userForm) {
+		if (userForm.getUsername() == null || userForm.getPassword() == null) {
 			// TODO: Throw specific Exception
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		} else {
 			// TODO: Validate username and password
 			//  It is currently using hardcoded password "secret" for JUNIT test implementation
-			if (loginForm.getPassword().equals("secret")) {
-				String token = new AuthTokenGeneratorJWT(loginForm.getUsername()).getToken();
+			if (userForm.getPassword().equals("secret")) {
+				String token = new AuthTokenGeneratorJWT(userForm.getUsername()).getToken();
 
 				return ResponseEntity
 						.status(HttpStatus.ACCEPTED)

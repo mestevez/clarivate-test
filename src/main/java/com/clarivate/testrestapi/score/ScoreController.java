@@ -1,4 +1,4 @@
-package com.clarivate.testrestapi;
+package com.clarivate.testrestapi.score;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

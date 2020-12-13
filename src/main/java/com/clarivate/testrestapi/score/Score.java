@@ -1,4 +1,4 @@
-package com.clarivate.testrestapi;
+package com.clarivate.testrestapi.score;
 
 
 import javax.persistence.Entity;

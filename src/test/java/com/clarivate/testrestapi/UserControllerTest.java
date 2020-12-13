@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SecurityControllerTest {
+public class UserControllerTest {
 	@Autowired
 	private MockMvc mvc;
 

@@ -51,4 +51,6 @@ curl --header "Authorization: {sessionKey}" -X PUT -v localhost:8080/level/3/sco
 ```
 
 ## Getting highest scores
+```
 curl --header "Authorization: {sessionKey}" -v localhost:8080/level/3/score?filter=highestscore
+```

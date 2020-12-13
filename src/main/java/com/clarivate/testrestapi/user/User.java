@@ -1,6 +1,6 @@
-package com.clarivate.testrestapi;
+package com.clarivate.testrestapi.user;
 
-public class Login {
+public class User {
 	private String username;
 	private String password;
 

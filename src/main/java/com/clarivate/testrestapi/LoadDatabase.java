@@ -1,5 +1,7 @@
 package com.clarivate.testrestapi;
 
+import com.clarivate.testrestapi.score.Score;
+import com.clarivate.testrestapi.score.ScoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
