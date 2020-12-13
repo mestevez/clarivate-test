@@ -1,5 +1,7 @@
 package com.clarivate.testrestapi;
 
+import com.clarivate.testrestapi.security.token.jwt.AuthTokenGeneratorJWT;
+import com.clarivate.testrestapi.security.token.jwt.JWTProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParserFactory;
@@ -20,15 +22,27 @@ class ScoreControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	void addScore() throws Exception {
+		JWTProperties jwtProperties = new JWTProperties();
+
 		MvcResult mvcResult = mvc.perform(
-			MockMvcRequestBuilders.put("/level/{levelId}/score/{value}", 3, 500)
+			MockMvcRequestBuilders
+					.put("/level/{levelId}/score/{value}", 3, 500)
+					.header(jwtProperties.getHeader(), new AuthTokenGeneratorJWT("mestevez", jwtProperties).getToken())
 		).andReturn();
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
 	}
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	void addScoreNotLogged() throws Exception {
 		MvcResult mvcResult = mvc.perform(
@@ -38,10 +52,18 @@ class ScoreControllerTest {
 		assertEquals(HttpStatus.FORBIDDEN.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
 	}
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	void getScores() throws Exception {
+		JWTProperties jwtProperties = new JWTProperties();
+
 		MvcResult mvcResult = mvc.perform(
-			MockMvcRequestBuilders.get("/level/{levelId}/score", 3)
+			MockMvcRequestBuilders
+					.get("/level/{levelId}/score", 3)
+					.header(jwtProperties.getHeader(), new AuthTokenGeneratorJWT("mestevez", jwtProperties).getToken())
 		).andReturn();
 
 		assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
@@ -60,6 +82,10 @@ class ScoreControllerTest {
 		}
 	}
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	void getScoresNotLogged() throws Exception {
 		MvcResult mvcResult = mvc.perform(

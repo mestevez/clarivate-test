@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,9 +22,9 @@ public class SecurityControllerTest {
 	@Test
 	void loginSuccess() throws Exception {
 		MvcResult mvcResult = mvc.perform(
-			MockMvcRequestBuilders.post("/login")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content("{ \"username\": \"mestevez\", \"password\": \"secret\" }")
+				MockMvcRequestBuilders.post("/login")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("{ \"username\": \"mestevez\", \"password\": \"secret\" }")
 		).andReturn();
 
 		assertEquals(HttpStatus.ACCEPTED.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
@@ -32,9 +34,9 @@ public class SecurityControllerTest {
 	@Test
 	void invalidLog() throws Exception {
 		MvcResult mvcResult = mvc.perform(
-			MockMvcRequestBuilders.post("/login")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content("{ \"username\": \"mestevez\", \"password\": \"fake\" }")
+				MockMvcRequestBuilders.post("/login")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("{ \"username\": \"mestevez\", \"password\": \"fake\" }")
 		).andReturn();
 
 		assertEquals(HttpStatus.FORBIDDEN.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
@@ -43,8 +45,8 @@ public class SecurityControllerTest {
 	@Test
 	void loginMissingParams() throws Exception {
 		MvcResult mvcResult = mvc.perform(
-			MockMvcRequestBuilders.post("/login")
-					.contentType(MediaType.APPLICATION_JSON)
+				MockMvcRequestBuilders.post("/login")
+						.contentType(MediaType.APPLICATION_JSON)
 		).andReturn();
 
 		assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
