@@ -9,7 +9,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
 
-public class AuthTokenGeneratorJWT extends AuthTokenGenerator {
+public class AuthTokenGeneratorJWT implements AuthTokenGenerator {
+
+	private final String token;
 
 	/**
 	 * @param username User name is used as subject of the generated token
@@ -23,7 +25,7 @@ public class AuthTokenGeneratorJWT extends AuthTokenGenerator {
 	 * @param properties JWT properties, which contains secretKey, expiration time, etc.
 	 */
 	public AuthTokenGeneratorJWT(String username, JWTProperties properties) {
-		super(_generateJWTToken(username, properties.getPrefix(), properties.getSecretKey(), properties.getExpires()));
+		token = _generateJWTToken(username, properties.getPrefix(), properties.getSecretKey(), properties.getExpires());
 	}
 
 	/**
@@ -66,5 +68,10 @@ public class AuthTokenGeneratorJWT extends AuthTokenGenerator {
 
 		// Add token prefix
 		return String.format("%s%s", prefix, token);
+	}
+
+	@Override
+	public String getToken() {
+		return token;
 	}
 }

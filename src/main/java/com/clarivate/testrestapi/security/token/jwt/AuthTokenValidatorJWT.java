@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Validation is performed using the JWT library, which handle authentication tokens in memory.
  */
-public class AuthTokenValidatorJWT extends AuthTokenValidator {
+public class AuthTokenValidatorJWT implements AuthTokenValidator {
 
+	private final HttpServletRequest request;
 	private final JWTProperties properties;
 
 	public AuthTokenValidatorJWT(HttpServletRequest request) {
@@ -20,7 +21,7 @@ public class AuthTokenValidatorJWT extends AuthTokenValidator {
 	}
 
 	public AuthTokenValidatorJWT(HttpServletRequest request, JWTProperties properties) {
-		super(request);
+		this.request = request;
 		this.properties = properties;
 	}
 
@@ -32,7 +33,7 @@ public class AuthTokenValidatorJWT extends AuthTokenValidator {
 	 */
 	@Override
 	public Authentication getAuth() {
-		String authenticationHeader = getRequest().getHeader(properties.getHeader());
+		String authenticationHeader = request.getHeader(properties.getHeader());
 
 		String jwtToken = authenticationHeader.replace(properties.getPrefix(), "");
 
@@ -57,7 +58,7 @@ public class AuthTokenValidatorJWT extends AuthTokenValidator {
 	 */
 	@Override
 	public boolean isValid() {
-		String authenticationHeader = getRequest().getHeader(properties.getHeader());
+		String authenticationHeader = request.getHeader(properties.getHeader());
 		return authenticationHeader != null && authenticationHeader.startsWith(properties.getPrefix());
 	}
 }
