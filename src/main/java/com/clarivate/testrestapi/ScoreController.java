@@ -12,19 +12,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class ScoreController {
 
+	private final ScoreRepository repository;
+
+	public ScoreController(ScoreRepository repository) {
+		this.repository = repository;
+	}
+
 	/**
 	 * Retrieves the highest scores for an specific level per user.
 	 */
-	@GetMapping("/level/{levelId}/score")
+	@GetMapping("/level/{level}/score")
 	ResponseEntity getScores(
-		@PathVariable("levelId") int levelId
+		@PathVariable("level") int level
 	) {
-		// TODO: Implement service code
+		// TODO: Get userId from session
+		int userId = 0;
 
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.body("[{ \"userid\": 0, \"score\": 500 }, { \"userid\": 0, \"score\": 488 }, { \"userid\": 0, \"score\": 470 }]");
+				.body(repository.findHighestByUserIdAndLevelOrderByValueDesc(userId, level));
 	}
 
 	/**
@@ -35,12 +42,15 @@ class ScoreController {
 	 *
 	 * @return
 	 */
-	@PutMapping("/level/{levelId}/score/{value}")
+	@PutMapping("/level/{level}/score/{value}")
 	ResponseEntity addScore(
-		@PathVariable("levelId") int levelId,
+		@PathVariable("level") int level,
 		@PathVariable("value") int value
 	) {
-		// TODO: Implement service code
+		// TODO: Get userId from session
+		int userId = 0;
+
+		repository.save(new Score(userId, level, value));
 
 		return ResponseEntity
 				.status(HttpStatus.NO_CONTENT)

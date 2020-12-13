@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,6 +18,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WebMvcTest(ScoreController.class)
+@ContextConfiguration(classes = ScoreRepository.class)
 class ScoreControllerTest {
 
 	@Autowired
@@ -32,7 +34,7 @@ class ScoreControllerTest {
 
 		MvcResult mvcResult = mvc.perform(
 			MockMvcRequestBuilders
-					.put("/level/{levelId}/score/{value}", 3, 500)
+					.put("/level/{level}/score/{value}", 3, 500)
 					.header(jwtProperties.getHeader(), new AuthTokenGeneratorJWT("mestevez", jwtProperties).getToken())
 		).andReturn();
 
@@ -46,7 +48,7 @@ class ScoreControllerTest {
 	@Test
 	void addScoreNotLogged() throws Exception {
 		MvcResult mvcResult = mvc.perform(
-			MockMvcRequestBuilders.put("/level/{levelId}/score/{value}", 3, 500)
+			MockMvcRequestBuilders.put("/level/{level}/score/{value}", 3, 500)
 		).andReturn();
 
 		assertEquals(HttpStatus.FORBIDDEN.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
@@ -62,7 +64,7 @@ class ScoreControllerTest {
 
 		MvcResult mvcResult = mvc.perform(
 			MockMvcRequestBuilders
-					.get("/level/{levelId}/score", 3)
+					.get("/level/{level}/score", 3)
 					.header(jwtProperties.getHeader(), new AuthTokenGeneratorJWT("mestevez", jwtProperties).getToken())
 		).andReturn();
 
@@ -70,7 +72,7 @@ class ScoreControllerTest {
 
 		List<Object> mvcResultScoreList = JsonParserFactory.getJsonParser().parseList(mvcResult.getResponse().getContentAsString());
 
-		int[] expectedScores = new int[]{ 500 , 488, 470};
+		int[] expectedScores = new int[]{ 2470 , 1470, 470};
 
 		assertEquals(expectedScores.length, mvcResultScoreList.size());
 		for (int expectedScoreIndex = 0; expectedScoreIndex < expectedScores.length; expectedScoreIndex++) {
@@ -89,7 +91,7 @@ class ScoreControllerTest {
 	@Test
 	void getScoresNotLogged() throws Exception {
 		MvcResult mvcResult = mvc.perform(
-			MockMvcRequestBuilders.get("/level/{levelId}/score", 3)
+			MockMvcRequestBuilders.get("/level/{level}/score", 3)
 		).andReturn();
 
 		assertEquals(HttpStatus.FORBIDDEN.value(), mvcResult.getResponse().getStatus(), "Unexpected response code");
