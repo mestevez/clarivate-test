@@ -1,4 +1,4 @@
-package com.clarivate.testrestapi;
+package com.clarivate.testrestapi.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
