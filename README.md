@@ -1,33 +1,40 @@
 # clarivate-test
-Test project for clarivate application
+Test project for clarivate job application.
 
 # Run application
+The following commands allows running, or start, the application.
 
-# Windows
+## Windows
 ```
 mvnw.cmd spring-boot:run
 ```
 
-# Linux/MacOD
+## Linux/MacOS
 ```
 ./mvnw spring-boot:run
 ```
-# Junit Test application
 
-# Windows
+# Junit Test
+There is a set of Junit scripts for testing the main functionalities.
+They can be executed with the following commands:
+
+## Windows
 ```
 mvnw.cmd test
 ```
 
-# Linux/MacOD
+## Linux/MacOS
 ```
 ./mvnw test
 ```
 
-# CURL Testing
-Before executing any curl command ensures the application is running.
+# Execution
+Once the application is started, it can be accessed via a simple HTTP request. 
+The easiest way to do so is using CURL commands. 
+
+## CURL
  
-## Loging In
+### Logging In
 Application access is secured by session key authentication. 
 So, the first step in order to execute further requests is getting a session key.
 It can be achieved by the executing the following curl command: 
@@ -47,14 +54,14 @@ Notice that "Bearer eyJh..." corresponds with session key, which must be sent in
 
 > Do not forget include "Bearer " when copying the key.
 
-## Adding scores
+### Adding scores
 The addScores REST method can be executed like this: 
 ```
 curl --header "Authorization: {sessionKey}" -X PUT -v localhost:8080/level/3/score/2999
 ```
 
 > Replace {sessionKey} by the token obtained before.
-## Getting highest scores
+### Getting highest scores
 ```
 curl --header "Authorization: {sessionKey}" -v localhost:8080/level/3/score?filter=highestscore
 ```

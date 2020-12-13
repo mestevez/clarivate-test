@@ -7,16 +7,31 @@ import javax.persistence.*;
 @Table(name = "score")
 public class Score {
 
+	/**
+	 * score unique identifier
+	 */
 	private @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long scoreId;
 
+	/**
+	 * User identifier which has make the score
+	 */
 	private long userId;
 
+	/**
+	 * Score level
+	 */
 	private int level;
 
+	/**
+	 * Score value
+	 */
 	private int value;
 
+	/**
+	 * Used internally by spring boot
+	 */
 	public Score() {
 	}
 

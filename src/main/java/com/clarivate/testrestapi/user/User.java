@@ -6,13 +6,26 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User {
 
+	/**
+	 * user unique identifier
+	 */
 	private @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long userId;
 
+	/**
+	 * User name, user for authentication
+	 */
 	private String username;
+
+	/**
+	 * Authentication password
+	 */
 	private String password;
 
+	/**
+	 * Used internally by spring boot
+	 */
 	public User() {
 	}
 
